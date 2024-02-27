@@ -1,48 +1,40 @@
 import drawsvg as draw
-from datetime import datetime, timedelta
+from datetime import datetime
 from config import CONFIG
 
 class Render:
     def __init__(self):
-        self.image = draw.Drawing(52 * 20, 7 * 20, origin='center')
+        self.image = draw.Drawing(52 * 15, 7 * 15)
         self.now_date = datetime.now().date()
-        self.now_week = self.now_date.weekday()
-        self.now_week_index = 53
-        self.now_date_index = self.now_week
         self.heatmap = []
-        for i in range(54):
-            self.heatmap.append([0] * 7)
-
-    def gen_heatmap(self, contributions):
-        for date in contributions:
-            offset = self.now_date - date
-            x = 53 - int(offset.days / 7)
-            y = 7 - offset.days % 7
-            self.heatmap[x][y] = contributions[date]
+        for i in range(0, 54):
+            self.heatmap.append([0, 0, 0, 0, 0, 0, 0])
+    
+    def gen_heatmap(self, contributions_list):
+        for contribution in contributions_list:
+            contribution_date = datetime.fromtimestamp(contribution['timestamp']).date()
+            offset = self.now_date - contribution_date
+            x = 53 - (offset.days + (5 - self.now_date.weekday())) // 7
+            y = contribution_date.weekday() + 1 if contribution_date.weekday() != 6 else 0
+            self.heatmap[x][y] += contribution['contributions']
         return self.heatmap
     
     def render(self):
-        padding = 3
         for x in range(0, 54):
             for y in range(0 ,7):
-                if x == 53 and y > self.now_week:
+                if x == 53 and (y - 1) > self.now_date.weekday():
                     continue
                 contribution = self.heatmap[x][y]
-                offset_x = x * 10 + padding
-                offset_y = y * 10 + padding
-                title = self.title(offset_x, offset_y, contribution)
+                offset_x = x * 10
+                offset_y = y * 10
+                title = self._title(offset_x, offset_y, contribution)
                 self.image.append(title)
-        self.image.save_svg(f"{CONFIG['user']}.svg")
+                # self.image.append(draw.Text(str(contribution), x=offset_x + 5, y=offset_y + 5, font_size=10, fill='white'))
+        self.image.save_svg(f".\\storage\\{CONFIG['user']}.svg")
     
-    def xy2datetime(self, x, y):
-        x_offset = self.now_date_index - x
-        y_offset = self.now_week_index - y
-        date = self.now_date - timedelta(days=x_offset, weeks=y_offset)
-        return date
-    
-    def title(self, x, y, contribution):
+    def _title(self, x, y, contribution):
         _title_level_color = {
-            0: '#000000',
+            0: '#52576799',
             1: '#516939',
             2: '#6c8c4c',
             3: '#87ab63',
