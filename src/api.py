@@ -1,6 +1,5 @@
 import requests
 import json
-from datetime import datetime
 from config import CONFIG
 
 class GiteaAPI:

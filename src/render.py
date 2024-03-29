@@ -1,6 +1,6 @@
 import drawsvg as draw
 from datetime import datetime
-from config import CONFIG
+from config import CONFIG, WORKDIR
 
 class Render:
     def __init__(self):
@@ -29,8 +29,8 @@ class Render:
                 offset_y = y * 10
                 title = self._title(offset_x, offset_y, contribution)
                 self.image.append(title)
-                # self.image.append(draw.Text(str(contribution), x=offset_x + 5, y=offset_y + 5, font_size=10, fill='white'))
-        self.image.save_svg(f".\\storage\\{CONFIG['user']}.svg")
+                # # self.image.append(draw.Text(str(contribution), x=offset_x + 5, y=offset_y + 5, font_size=10, fill='white'))
+        self.image.save_svg(f"{WORKDIR}\\storage\\{CONFIG['user']}.svg")
     
     def _title(self, x, y, contribution):
         _title_level_color = {
