@@ -8,7 +8,7 @@ class GiteaAPI:
         self.token = token
 
     def get_contribution(self, user):
-        url = f'{self.url}\\api\\v1\\users\\{user}\\heatmap'
+        url = f'{self.url}/api/v1/users/{user}/heatmap'
         headers = {
             'Authorization': f'token {self.token}'
         }
