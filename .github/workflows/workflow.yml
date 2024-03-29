@@ -2,6 +2,7 @@ name: gen gitea contribution
 on:
   schedule:
     - cron: "0 */24 * * *"
+  workflow_dispatch:
 jobs:
   generate:
     runs-on: ubuntu-latest
