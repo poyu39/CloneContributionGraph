@@ -4,7 +4,7 @@ from config import CONFIG, WORKDIR
 
 class Render:
     def __init__(self):
-        self.image = draw.Drawing(52 * 15, 7 * 15)
+        self.image = draw.Drawing(55 * 10, 7 * 10)
         self.now_date = datetime.now().date()
         self.heatmap = []
         for i in range(0, 54):
