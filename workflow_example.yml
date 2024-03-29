@@ -2,6 +2,7 @@ name: gen gitea contribution
 on:
   schedule:
     - cron: "0 */24 * * *"
+  workflow_dispatch:
 jobs:
   generate:
     runs-on: ubuntu-latest
@@ -21,10 +22,10 @@ jobs:
       - name: Run script
         run: python .\src\main.py
       - name: Commit
-      run: |
-        git config --local user.email "github-actions[bot]@users.noreply.github.com"
-        git config --local user.name "github-actions[bot]"
-        git commit -a -m "Update Gitea Contribution"
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -a -m "Update Gitea Contribution"
       - name: Push
         uses: ad-m/github-push-action@master
         with:
